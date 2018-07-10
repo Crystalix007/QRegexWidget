@@ -29,7 +29,7 @@
     <item>
      <widget class="QLineEdit" name="replaceRegex">
       <property name="toolTip">
-       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The underlying library used here uses a limited susbset of replace syntax.&lt;/p&gt;&lt;p&gt;To reference a group, use $n, where n is the number of the group.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;To replace with group 0-9 without a space, write n as a two digit number.&lt;/p&gt;&lt;p&gt;For example: $01, $02, $03, ...&lt;/p&gt;&lt;p&gt;Then, literal numbers can be written after.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       <string/>
       </property>
       <property name="placeholderText">
        <string>Replace Regex</string>
