@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>../QRegexWidget.png</normaloff>../QRegexWidget.png</iconset>
+    <normaloff>:/QRegexWidget.png</normaloff>:/QRegexWidget.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">

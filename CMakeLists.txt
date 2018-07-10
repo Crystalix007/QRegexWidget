@@ -5,6 +5,8 @@ project(QRegexWidget)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed.
 set(CMAKE_AUTOMOC ON)
+# Instruct CMake to run rcc automatically when needed.
+set(CMAKE_AUTORCC ON)
 
 # Find the QtWidgets library
 find_package(Qt5Widgets CONFIG REQUIRED)
@@ -15,6 +17,7 @@ find_library(pcre2 REQUIRED)
 set(qregexwidget_SRC
   src/main.cpp
   src/qregexwidget.cpp
+  Resources.qrc
 )
 
 # Create code from a list of Qt designer ui files.
