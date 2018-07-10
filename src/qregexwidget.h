@@ -15,6 +15,12 @@ public:
     explicit QRegexWidget(QWidget *parent = 0);
     ~QRegexWidget();
 
+protected:
+	void doMatch();
+	void clearMatches();
+	
+	bool matched = false;
+
 private:
     Ui::QRegexWidget *ui;
 };

@@ -9,6 +9,9 @@ set(CMAKE_AUTOMOC ON)
 # Find the QtWidgets library
 find_package(Qt5Widgets CONFIG REQUIRED)
 
+# Find the PCRE library
+find_library(pcre2 REQUIRED)
+
 set(qregexwidget_SRC
   src/main.cpp
   src/qregexwidget.cpp
@@ -22,7 +25,7 @@ qt5_wrap_ui(qregexwidget_SRC src/qregexwidget.ui)
 add_executable(qregexwidget ${qregexwidget_SRC})
 
 # Use the Widgets module from Qt 5.
-target_link_libraries(qregexwidget Qt5::Widgets)
+target_link_libraries(qregexwidget Qt5::Widgets pcre2-8)
 
 # Install the executable
 install(TARGETS qregexwidget DESTINATION bin)
