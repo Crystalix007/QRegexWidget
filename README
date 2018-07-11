@@ -5,11 +5,25 @@ You need Qt5 and CMake 2.8.11 or higher
 
 -- Build instructions --
 
-cd /your/project/build
+cd ~/some/dir/
+git clone https://github.com/Crystalix007/QRegexWidget.git
+cd QRegexWidget
+
+For Arch Linux users (or other users using pacman):
+
+makepkg -ef --install
+
+Else:
+
+cd build
 cmake ../
-make
+ninja
 
 ./qregexwidget
+
+And to install:
+
+ninja install
 
 
 -- Tutorials and resources --
