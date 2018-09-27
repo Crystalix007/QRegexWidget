@@ -4,6 +4,8 @@
 #include <jpcre2.hpp>
 #include <QPlainTextEdit>
 
+#include <QRegularExpression>
+
 QRegexWidget::QRegexWidget(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::QRegexWidget)
@@ -44,15 +46,18 @@ void QRegexWidget::doMatch()
 	jpcre2::VecOff matchEndOff{};
 	jp::RegexMatch match{};
 	
-	size_t count = match.setRegexObject(&re)
-						.setSubject(&text)
-						.addModifier("g")
-						.setNumberedSubstringVector(&vecNum)
-						.setNamedSubstringVector(&vecNas)
-						.setNameToNumberMapVector(&vecNtN)
-						.setMatchStartOffsetVector(&matchOff)
-						.setMatchEndOffsetVector(&matchEndOff)
-						.match();
+	match = match.setRegexObject(&re)
+				.setSubject(&text)
+				.setNumberedSubstringVector(&vecNum)
+				.setNamedSubstringVector(&vecNas)
+				.setNameToNumberMapVector(&vecNtN)
+				.setMatchStartOffsetVector(&matchOff)
+				.setMatchEndOffsetVector(&matchEndOff);
+	
+	if (!this->ui->searchOptions->text().isEmpty())
+		match.addModifier(this->ui->searchOptions->text().toStdString());
+	
+	size_t count = match.match();
 	
 	ui->label->setText(QString::number(count) + " matches");
 	
@@ -67,17 +72,20 @@ void QRegexWidget::doMatch()
 	}
 	
 	html += QString::fromStdString(text.substr(currPos)).toHtmlEscaped();
+	html.replace(QRegularExpression{ QString{ "\r?\n" } }, "<br />\n");
 	
 	ui->matchedText->clear();
 	ui->matchedText->appendHtml(html);
 	
 	jp::RegexReplace rr{ &re };
-	std::string replaced = rr.setSubject(text)
-							 .setReplaceWith(ui->replaceRegex->text().toStdString())
-							 .setModifier("g")
-							 .replace();
+	rr = rr.setSubject(text).setReplaceWith(ui->replaceRegex->text().toStdString());
 	
-	ui->replacedText->setPlainText(QString::fromStdString(replaced));
+	if (!this->ui->searchOptions->text().isEmpty())
+		rr.setModifier(this->ui->searchOptions->text().toStdString());
+	
+	QString replaced = QString::fromStdString(rr.replace());
+	
+	ui->replacedText->setPlainText(replaced);
 	matched = true;
 }
 
