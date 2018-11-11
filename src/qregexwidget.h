@@ -18,8 +18,6 @@ public:
 protected:
 	void doMatch();
 	void clearMatches();
-	
-	bool matched = false;
 
 private:
     Ui::QRegexWidget *ui;

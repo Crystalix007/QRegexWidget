@@ -12,7 +12,6 @@ QRegexWidget::QRegexWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 	connect(ui->matchButton, &QPushButton::clicked, this, &QRegexWidget::doMatch);
-	connect(ui->matchedText, &QPlainTextEdit::textChanged, this, &QRegexWidget::clearMatches);
 }
 
 QRegexWidget::~QRegexWidget()
@@ -24,21 +23,25 @@ void QRegexWidget::doMatch()
 {
 	if (ui->matchRegex->text().isEmpty())
 	{
-		ui->label->setText("Cannot use empty match");
+		ui->statusLabel->setText("Cannot use empty match");
 		return;
 	}
 	
 	using jp = jpcre2::select<char>;
 	
 	jp::Regex re{ ui->matchRegex->text().toStdString() };
+	const auto reOptions = this->ui->searchOptions->text();
+	
+	if (!reOptions.isEmpty())
+		re.addModifier(reOptions.toStdString()).compile();
 	
 	if (!re)
 	{
-		ui->label->setText("Invalid Regex");
+		ui->statusLabel->setText("Invalid Regex");
 		return;
 	}
 	
-	std::string text{ ui->matchedText->toPlainText().toStdString() };
+	std::string text{ ui->inputText->toPlainText().toStdString() };
 	jp::VecNum vecNum{};
 	jp::VecNas vecNas{};
 	jp::VecNtN vecNtN{};
@@ -46,20 +49,17 @@ void QRegexWidget::doMatch()
 	jpcre2::VecOff matchEndOff{};
 	jp::RegexMatch match{};
 	
-	match = match.setRegexObject(&re)
-				.setSubject(&text)
-				.setNumberedSubstringVector(&vecNum)
-				.setNamedSubstringVector(&vecNas)
-				.setNameToNumberMapVector(&vecNtN)
-				.setMatchStartOffsetVector(&matchOff)
-				.setMatchEndOffsetVector(&matchEndOff);
-	
-	if (!this->ui->searchOptions->text().isEmpty())
-		match.addModifier(this->ui->searchOptions->text().toStdString());
+	match.setRegexObject(&re)
+		.setSubject(&text)
+		.setNumberedSubstringVector(&vecNum)
+		.setNamedSubstringVector(&vecNas)
+		.setNameToNumberMapVector(&vecNtN)
+		.setMatchStartOffsetVector(&matchOff)
+		.setMatchEndOffsetVector(&matchEndOff);
 	
 	size_t count = match.match();
 	
-	ui->label->setText(QString::number(count) + " matches");
+	ui->statusLabel->setText(QString::number(count) + " matches");
 	
 	QString html{};
 	size_t currPos = 0;
@@ -74,28 +74,12 @@ void QRegexWidget::doMatch()
 	html += QString::fromStdString(text.substr(currPos)).toHtmlEscaped();
 	html.replace(QRegularExpression{ QString{ "\r?\n" } }, "<br />\n");
 	
-	ui->matchedText->clear();
-	ui->matchedText->appendHtml(html);
+	ui->matchedText->setHtml(html);
 	
 	jp::RegexReplace rr{ &re };
 	rr = rr.setSubject(text).setReplaceWith(ui->replaceRegex->text().toStdString());
 	
-	if (!this->ui->searchOptions->text().isEmpty())
-		rr.setModifier(this->ui->searchOptions->text().toStdString());
-	
 	QString replaced = QString::fromStdString(rr.replace());
 	
 	ui->replacedText->setPlainText(replaced);
-	matched = true;
-}
-
-void QRegexWidget::clearMatches()
-{
-	if (matched)
-	{
-		matched = false;
-		ui->matchedText->setPlainText(ui->matchedText->toPlainText());
-		ui->replacedText->clear();
-		ui->label->setText("");
-	}
 }
