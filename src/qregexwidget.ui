@@ -119,7 +119,7 @@
        <enum>Qt::NoFocus</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="inputTextTab">
        <attribute name="title">
@@ -129,7 +129,7 @@
         <item>
          <widget class="QPlainTextEdit" name="inputText">
           <property name="focusPolicy">
-           <enum>Qt::ClickFocus</enum>
+           <enum>Qt::StrongFocus</enum>
           </property>
          </widget>
         </item>
