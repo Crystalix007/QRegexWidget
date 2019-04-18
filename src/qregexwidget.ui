@@ -67,7 +67,10 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string notr="true">g</string>
+         <string notr="true">gm</string>
+        </property>
+        <property name="placeholderText">
+         <string>optional modifiers</string>
         </property>
        </widget>
       </item>
@@ -182,12 +185,10 @@
  </widget>
  <tabstops>
   <tabstop>matchRegex</tabstop>
-  <tabstop>matchButton</tabstop>
   <tabstop>replaceRegex</tabstop>
   <tabstop>searchOptions</tabstop>
-  <tabstop>matchedText</tabstop>
-  <tabstop>replacedText</tabstop>
   <tabstop>inputText</tabstop>
+  <tabstop>matchButton</tabstop>
  </tabstops>
  <resources/>
  <connections/>

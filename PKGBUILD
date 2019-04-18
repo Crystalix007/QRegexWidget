@@ -15,7 +15,7 @@ prepare() {
 
 build() {
 	cd ../build
-	cmake "-DCMAKE_INSTALL_PREFIX:PATH=${pkgdir}/usr" ..
+	cmake "-DCMAKE_INSTALL_PREFIX:PATH=${pkgdir}/usr" -GNinja ..
 	ninja
 }
 
